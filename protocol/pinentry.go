@@ -18,6 +18,7 @@ type pinentry interface {
 	SetQualityBarTT(tt string)
 	GetPin() []byte
 	Confirm() bool
+	Close()
 }
 
 type client struct {
