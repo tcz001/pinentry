@@ -17,7 +17,7 @@ type pinentry interface {
 	SetQualityBar()
 	SetQualityBarTT(tt string)
 	GetPin() []byte
-	Confirm()
+	Confirm() bool
 }
 
 type client struct {
@@ -97,8 +97,15 @@ func (c *client) SetQualityBarTT(tt string) {
 	}
 }
 
-func (c *client) Confirm() {
+func (c *client) Confirm() bool {
+	confirmed := false
 	c.in.Write([]byte("CONFIRM\n"))
+	// ok
+	ok, _, _ := c.pipe.ReadLine()
+	if bytes.Compare(ok, []byte("OK")) == 0 {
+		confirmed = true
+	}
+	return confirmed
 }
 
 func (c *client) GetPin() []byte {
@@ -116,7 +123,7 @@ func (c *client) Close() {
 	return
 }
 
-func NewClient(path string) *client {
+func NewClient(path string) pinentry {
 	cmd := exec.Command(path)
 	in, err := cmd.StdinPipe()
 	if err != nil {
