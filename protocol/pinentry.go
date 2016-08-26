@@ -89,7 +89,7 @@ func (c *client) SetQualityBar() {
 }
 
 func (c *client) SetQualityBarTT(tt string) {
-	c.in.Write([]byte("SETQUALITYBAR_TT" + tt + "\n"))
+	c.in.Write([]byte("SETQUALITYBAR_TT " + tt + "\n"))
 	// ok
 	ok, _, _ := c.pipe.ReadLine()
 	if bytes.Compare(ok, []byte("OK")) != 0 {
