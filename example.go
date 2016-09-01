@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	client := protocol.NewClient("pinentry-mac")
-	p := client.GetPin()
+	client, _ := protocol.NewPinentryClient()
+	p, _ := client.GetPin()
 	fmt.Println(string(p))
 	client.Close()
 }
